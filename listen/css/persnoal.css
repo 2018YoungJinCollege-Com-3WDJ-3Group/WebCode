@@ -1,0 +1,13 @@
+#tbodyOfPianoTable tr td .cell-piano{
+    text-align: center;
+    background-color: white;
+
+}
+
+.cell-piano:hover{
+    background-color: green;
+}
+
+th{
+    text-align: center;
+}
