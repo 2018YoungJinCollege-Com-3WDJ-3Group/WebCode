@@ -40,10 +40,13 @@
 <button class="btn btn-default" id="button_read">불러오기</button>
 템포<input  type="text" id="input_tempo" placeholder="Tempo">
 시작 위치<input  type="text" id="input_startPoint" placeholder="Record Number">
-
+종료 위치<input  type="text" id="input_endPoint" placeholder="Record Number">
 
 <script src="../js/jquery-3.3.1.js"></script>
 <script>
+    var audioHandler;
+
+
     // createPiano(13);
 
     //초기 동작
@@ -135,17 +138,30 @@
 
     $('#button_play').click(
         function () {
+            window.clearInterval(audioHandler);
+
+
             var currentLine = $('#input_startPoint')[0].value;
+            var endLine = $('#input_endPoint')[0].value;
 
             if(!currentLine)
                 currentLine = 1;
 
+            if(!endLine)
+                endLine = document.getElementById('theadOfPianoTable').children.length - 1;
+
             var tempo = getTempo();
 
-            var audioHandler = setInterval(function () {
+            audioHandler = setInterval(function () {
                 audioPlay(currentLine);
+
+                if(currentLine == endLine)
+                    window.clearInterval(audioHandler);
+
                 currentLine++;
             },tempo);
+
+
         }
     );
 
@@ -180,7 +196,6 @@
 
     function audioPlay(currentLine) {
         var playlist = new Array();
-        var maxOfLine = document.getElementById('theadOfPianoTable').children.length - 1;
 
         playlist[0] = getPlaylist(currentLine);
 
@@ -209,7 +224,14 @@
     $('#theadOfPianoTable th').on('click',function () {
         var clickPoint = event.target.innerHTML;
         if(clickPoint != "항목"){
-            $('#input_startPoint')[0].value = clickPoint    ;
+            $('#input_startPoint')[0].value = clickPoint;
+        }
+    })
+
+    $('#theadOfPianoTable th').on('dbclick',function () {
+        var clickPoint = event.target.innerHTML;
+        if(clickPoint != "항목"){
+            $('#input_endPoint')[0].value = clickPoint;
         }
     })
 
