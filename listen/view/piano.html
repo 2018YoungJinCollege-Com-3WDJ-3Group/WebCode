@@ -45,6 +45,7 @@
 <script src="../js/jquery-3.3.1.js"></script>
 <script>
     var audioHandler;
+    const MAX_NOTES = 30;
 
 
     // createPiano(13);
@@ -58,7 +59,7 @@
         for(var i = 0; i < max; i++){
             createHead();
 
-            for(var j = 0; j < 30; j++) {
+            for(var j = 0; j < MAX_NOTES; j++) {
                 createScore(j);
             }
         }
@@ -91,8 +92,10 @@
 
         createdTD.classList.add('cell-piano');
 
-
-        createdTD.innerHTML = "&nbsp&nbsp&nbsp&nbsp";
+        if(tbody.children[i].childElementCount%8 == 0)
+            createdTD.innerHTML = tbody.children[i].firstChild.innerHTML;
+        else
+            createdTD.innerHTML = "&nbsp&nbsp&nbsp&nbsp";
         tbody.children[i].appendChild(createdTD);
     }
 
@@ -153,7 +156,18 @@
             var tempo = getTempo();
 
             audioHandler = setInterval(function () {
+                try {
+                    removeFocus();
+                } catch(e){
+
+                }
+
+                if(currentLine > 0)
+                    focusLine(currentLine);
+
                 audioPlay(currentLine);
+
+
 
                 if(currentLine == endLine)
                     window.clearInterval(audioHandler);
@@ -221,19 +235,19 @@
 
     }
 
-    $('#theadOfPianoTable th').on('click',function () {
+    $('#theadOfPianoTable').on('click','th',function () {
         var clickPoint = event.target.innerHTML;
         if(clickPoint != "항목"){
             $('#input_startPoint')[0].value = clickPoint;
         }
-    })
+    });
 
-    $('#theadOfPianoTable th').on('dbclick',function () {
+    $('#theadOfPianoTable').on('dblclick','th',function () {
         var clickPoint = event.target.innerHTML;
         if(clickPoint != "항목"){
             $('#input_endPoint')[0].value = clickPoint;
         }
-    })
+    });
 
 
     function getPlaylist(line) {
@@ -355,7 +369,7 @@
         $('#input_tempo')[0].value = tempo;
 
         for(var i = 0; i < convertScore.length; i++)
-            for(var j = 0, k = 0; j < 30; j++){
+            for(var j = 0, k = 0; j < MAX_NOTES; j++){
                 var currentScore = document.getElementById('tbodyOfPianoTable').children[j].children[i+1];
                 if(currentScore.getAttribute('name') == convertScore[i][k] - 25) {
                     currentScore.classList.add("cell-piano-input");
@@ -369,6 +383,27 @@
 
 
 
+    }
+
+    function focusLine(currentLine) {
+        var head = $('#pianoTable')[0].children[0].children[currentLine];
+        var body;
+
+        head.classList.add('line-focus');
+
+        for(var i = 0; i < MAX_NOTES; i++){
+            body = $('#pianoTable')[0].children[1].children[i].children[currentLine];
+            body.classList.add('line-focus');
+        }
+
+    }
+
+    function removeFocus(){
+        var focusedLine = document.getElementsByClassName('line-focus');
+
+        while(focusedLine.length > 0){
+            focusedLine[0].classList.remove('line-focus')
+        }
     }
 
 
