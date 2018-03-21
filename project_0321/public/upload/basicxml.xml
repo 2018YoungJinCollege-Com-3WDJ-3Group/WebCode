@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+ <parts>
+  <part>
+   <name>Songdo</name>
+   <addr>Phohang</addr>
+  </part>
+  <part>
+   <name>Minsuk</name>
+   <addr>Heaven</addr>
+  </part>
+  <part>
+   <name>Goldrainn</name>
+   <addr>Phohang yonghung</addr>
+  </part>
+  <part>
+   <name>youngHo</name>
+   <addr> gyoungJu</addr>
+  </part>
+  <ADMIN_GRADE code='ADM' text='admin'/>
+  <ADMIN_GRADE code='MAG' text='manager'/>
+  <ADMIN_GRADE code='GUE' text='guest'/>
+</parts>
