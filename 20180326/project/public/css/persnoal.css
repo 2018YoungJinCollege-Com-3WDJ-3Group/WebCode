@@ -1,0 +1,83 @@
+#pianoTable{
+    font-size: 7pt;
+    width : 26px;
+        
+    vertical-align: middle;
+    
+}
+
+#theadOfPianoTable>th{
+    background-image: url("../img/cell_head.png");
+    background-size: 25;
+    text-align: center;
+    
+}
+
+.cell-piano{
+    text-align: center;
+    background-color: white;
+    background-image: url("../img/cell_unput.png");
+    background-size: cover;
+    
+    
+    
+}
+
+.cell-piano:hover{
+    background-color: green;
+    background-image: url("../img/cell_input.png");
+    
+}
+
+
+.cell-piano-input{
+    background-image: url("../img/cell_input.png");
+    background-size: cover;
+}
+
+
+
+#theadOfPianoTable th:hover{
+    background-color: black;
+    color: white;
+}
+
+
+.line-focus {
+    background-color: black;
+    color: white;
+    background-image: url("../img/cell_play.png");
+    background-size: cover;
+}
+
+
+.crossFocus {
+    background-image: url("../img/cell_cross.png");
+    background-size: cover;
+    font-weight: bold;
+    color: white;
+}
+
+.cell-melody{
+    background-image: url("../img/cell_melody.png");
+    background-size: cover;
+}
+
+.tempImage{
+    content: url("../img/mk_score_icon.png");
+    width:25px;
+    height:25px;
+    display:inline;
+}
+
+#scoreInfo{
+    text-align:left;
+    margin-top:50px;
+    margin-bottom:30px;
+    border:solid;
+}
+
+#scoreInfo>*{
+    
+    margin-bottom:5px;
+}
