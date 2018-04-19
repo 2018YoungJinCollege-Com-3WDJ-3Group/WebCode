@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Auth;
 use DB; 
+use Session;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -36,51 +37,46 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        session_start();
         $this->middleware('guest')->except('logout');
     }
-    //모바일 로그인 페이지 불러오기
     public function getLogin()
     {
         return view('user.login');
     }
-    //로그인 실행 하기
      public function postLogin(Request $request)
     {
         //
-            
+        //세션 재시작&user session_id 저장
+        $request->session()->regenerate();
         $name=$request->get('name');
         $password=$request->get('password');
-        $bool=DB::table('users')->where([['name', $name],['password',$password]])->exists();
+        $user=DB::table('users')->where([['name', $name],['password',$password]])->first();
         
-        if($bool)
+        if($user!=null)
         {   
-           $request->session()->put('is_login', true);
-            $user = DB::table('users')->where('name',  $name)->first();
+            
+            $s_id=session()->getId();
+            $post=User::findOrFail($user->id);
+            $post->session_id=$s_id;
+            $post->save();
+            
+            $request->session()->put('is_login', true);
             $request->session()->put('user_name',$user->name);
             $request->session()->put('user_id',$user->id);
+            $request->session()->put('point', $user->point);
             return redirect('/');
             
-            /*//모바일
-            $s_id=session_id();
-            $arr=array('check'=>$bool,'session_id'=>$s_id);
             
-            $user = DB::table('users')->where('name',  $name)->first();
-            
-            $result=array_merge($arr,(array)$user);
-            return json_encode($result); 
-            */
         }
         else{
             return redirect('/login');
             
-            /*//모바일
-            $result=array('check'=>$bool);
-            return json_encode($result);*/
+            
         }
     }
-    //모바일 로그아웃.
     public function getLogout(Request $request){
+            
+            $request->session()->flush();
             $request->session()->put('is_login', false);
             return redirect('/');
     }
